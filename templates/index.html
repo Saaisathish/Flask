@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Predict Fraud</title>
+  </head>
+  <body>
+    <h1>Predict Fraud</h1>
+    <form id="transactionForm" action="/" method="POST">
+      <label for="amount">Amount:</label><br />
+      <input type="text" id="amount" name="amount" /><br />
+      <label for="oldbalanceOrg">Old Balance Origin:</label><br />
+      <input type="text" id="oldbalanceOrg" name="oldbalanceOrg" /><br />
+      <label for="newbalanceOrig">New Balance Origin:</label><br />
+      <input type="text" id="newbalanceOrig" name="newbalanceOrig" /><br />
+      <label for="oldbalanceDest">Old Balance Destination:</label><br />
+      <input type="text" id="oldbalanceDest" name="oldbalanceDest" /><br />
+      <label for="newbalanceDest">New Balance Destination:</label><br />
+      <input type="text" id="newbalanceDest" name="newbalanceDest" /><br />
+      <label for="isFlaggedFraud">Is Flagged Fraud:</label><br />
+      <input
+        type="text"
+        id="isFlaggedFraud"
+        name="isFlaggedFraud"
+      /><br /><br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
