@@ -1,11 +1,11 @@
-from flask import Flask, request, render_template
+from flask import Flask, redirect, render_template, request, url_for
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import pickle
 import pandas as pd
 import joblib
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 # Secret key for encryption (must be 16, 24, or 32 bytes long)
 SECRET_KEY = b'\xbe\xe9y\x05\xe3dB3=S#\xc7\xeas(\xd3'
@@ -32,7 +32,24 @@ def decrypt_data(ciphertext, nonce, tag):
     return decrypted_data.decode().strip()  # Strip extra spaces
 
 # Route for the form
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def login():
+    return render_template('Login.html')
+
+# @app.route('/', methods=['GET','POST'])
+# def process_login():    
+#     username = request.form['username']
+#     password = request.form['password']    
+#     if username == 'demo' and password == 'demo':        
+#         return redirect(url_for('index_page'))
+#     else:    
+#         return redirect(url_for('login'))
+    
+# @app.route('/index.html', methods=['GET', 'POST'])
+# def index_page():
+#     return render_template('index.html')
+
+@app.route('/index.html', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         # Get form data
@@ -57,7 +74,7 @@ def index():
         print(f"Ciphertext (hex): {ciphertext.hex()}")
         print(f"Nonce (hex): {nonce.hex()}")
         print(f"Tag (hex):   {tag.hex()}\n")
-        # Decrypt input data
+        
         decrypted_data = decrypt_data(ciphertext, nonce, tag)
         
 
@@ -66,14 +83,19 @@ def index():
         
         # Convert the decrypted values to a DataFrame
         input_df = pd.DataFrame([decrypted_values],
-                             columns=['amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest', 'isFlaggedFraud'])
+            columns=['amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest', 'isFlaggedFraud'])
         
         # Make prediction
         prediction = model.predict(input_df)
         print("Prediction:", prediction)
         
+      
         return render_template('result.html', prediction=prediction)
     return render_template('index.html')
+
+# @app.route('/result.html', methods=['GET', 'POST'])
+# def result():
+#     return render_template('result.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
